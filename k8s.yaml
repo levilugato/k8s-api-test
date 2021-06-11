@@ -1,0 +1,63 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    alb.ingress.kubernetes.io/target-type: ip
+  name: "apptestlevilugato"
+  namespace: "default"
+spec:
+  ports:
+  - port: 80
+    targetPort: 8080
+    protocol: TCP
+    name: http
+  type: NodePort
+  selector:
+    app: "apptestlevilugato"
+
+---
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: apptestlevilugato
+  labels:
+    app: apptestlevilugato
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: apptestlevilugato
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: apptestlevilugato
+    spec:
+      containers:
+      - image: 766315258068.dkr.ecr.us-east-1.amazonaws.com/levilugato
+        name: apptestlevilugato
+        ports:
+        - containerPort: 8080
+        imagePullPolicy: Always
+
+
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: "levilugatotestapp-ingress"
+  namespace: "default"
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+  labels:
+    app: apptestlevilugato
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /*
+            backend:
+              serviceName: "apptestlevilugato"
+              servicePort: 80
