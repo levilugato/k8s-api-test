@@ -8,7 +8,7 @@ Settings explained :
 
     I am using an ALB load balancer as ingress to expose it
 
-    I am using metrics server + hpa to scale the pods by CPU ussage
+    I am using metrics server + hpa to scale the pods by CPU usage
 
 
 The API has 2 endpoints :
