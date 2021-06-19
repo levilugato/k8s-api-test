@@ -1,7 +1,5 @@
 ## k8s/Golang API test
 
-The application is running on : `http://acdf8e79-default-levilugat-96ef-1589219485.us-east-1.elb.amazonaws.com/` 
-
 Settings explained :
 
     I am using EKS + Fargate on aws to hostage it
